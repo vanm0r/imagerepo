@@ -24,10 +24,10 @@ def add_item(title, link, descr):
    connection.close()
    return request
 
-def delete_item(title):
+def delete_item(link):
    connection = mysql.connector.connect(**DB_conf)
    cursor = connection.cursor()
-   request = f"DELETE FROM imagelinks WHERE title = '{title}';"
+   request = f"DELETE FROM imagelinks WHERE link = '{link}';"
    cursor.execute(request)
    connection.commit()
    cursor.close()
@@ -93,16 +93,16 @@ def add():
 
 @app.route('/delete')
 def delete():
-   title = request.args.get("title", "", str)
+   link = request.args.get("link", "", str)
    S =  "<!DOCTYPE html>\n"
    S += "<html>\n"
    S += "   <head>\n"
-   S += "      <title>Delete an image</title>\n"
+   S += "      <title>Delete an image link</title>\n"
    S += "   </head>\n"
    S += "   <body>\n"
-   S += "      <h1>Delete an image</h1>\n"
-   if title != "":
-      S += delete_item(title)
+   S += "      <h1>Delete an image link</h1>\n"
+   if link != "":
+      S += delete_item(link)
    S += "      <p><a href='/'>Back!</a></p>\n"
    S += "   </body>\n"
    S += "</html>\n"
@@ -141,7 +141,7 @@ def deleteform():
     S += menu()
     S += "      <h1>Delete a dog breed from the list</h1>\n"
     S += "      <form action='/delete'>\n"
-    S += "        <input type='text' name='title' value='Title'/>\n"
+    S += "        <input type='url' name='link' value='link'/>\n"
     S += "        <input class='button' type='submit' value='Submit'/>\n"
     S += "      </form>\n"
     S += "   </body>\n"
